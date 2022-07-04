@@ -18,5 +18,8 @@ export default createStore<State>({
         updateMusicList(state: State, payload: IMusicInfo[]) {
             state.musicList = payload;
         },
+        clear(state: State) {
+            state.musicList = [];
+        },
     },
 });
