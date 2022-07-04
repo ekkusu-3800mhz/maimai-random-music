@@ -7,4 +7,5 @@ export interface IMusicInfo {
     };
     level: string[];
     type: "SD" | "DX";
+    id: string;
 }
