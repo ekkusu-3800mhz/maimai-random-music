@@ -1,24 +1,34 @@
-# maimai-rand
+# 清远舞萌比赛BP（Ban & Pick）机制随机抽歌器
 
-## Project setup
+## 1. 介绍
+本应用是为清远舞萌DX比赛 THE 3rd. 决赛所设计的。可以从当前版本的舞萌DX曲库中随机抽取7首歌曲，并让1P和2P选手自行各禁用2首歌曲（总计禁用4曲），余下3首歌曲用于决赛比拼。
+
+## 2. 资源下载
+在编译运行应用之前，请先下载应用所需的静态图片资源。资源包请[点击此链接下载](https://mai-random.xbuster.moe/images.zip)，并解压到 `public/images` 目录中。
+
+**注意：资源文件仅供学习交流使用，请自觉在下载 24 小时内删除资源文件。**
+
+## 3. 编译或运行
+
+### 下载代码后，首先安装依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 在开发环境运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 编译生成生产环境版本
 ```
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## 4. 待改进的内容
+- 针对各类屏幕宽度的设备进行响应式设计（目前仅对iPad Air的屏幕宽度设计了布局样式）。
+- 放开更多的难度选择（目前仅允许选择决赛赛制要求的Lv.12~Lv.14难度）。
+- 消除其他反直觉的设计。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 5. 鸣谢
+`@Diving-Fish` —— 舞萌DX查分器和mai-bot开发者。此应用的乐曲数据和曲绘封面均来源于舞萌DX查分器的衍生项目，在此感谢水鱼前辈和一众开发者们所构建的舞萌DX查分器生态。
