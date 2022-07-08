@@ -5,5 +5,11 @@ import store, { injectionKey } from "@/app/core/store";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 
+/**
+ *  清远舞萌比赛BP机制抽歌器 - SPA入口文件
+ * 
+ *  @generator vue-cli
+ *  @license MIT
+ */
 
 createApp(App).use(store, injectionKey).use(router).use(ElementPlus).mount("#app");

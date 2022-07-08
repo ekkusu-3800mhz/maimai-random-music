@@ -6,17 +6,27 @@ import { injectionKey } from "@/app/core/store";
 
 import Data from "@/app/data";
 import { AxiosResponse } from "axios";
-import { IMusicInfo } from "@/app/data/interface";
+import { IMusicData } from "@/app/data/interface";
 
 import { ElMessage, ElLoading } from "element-plus";
 import { Refresh } from '@element-plus/icons-vue';
 
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 难度选择视图
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 const { push } = useRouter();
 const store = useStore(injectionKey);
 
+// 定义可选的难度
 const levels = ref<string[]>(["12", "12+", "13", "13+", "14",]);
+// 记录选择的难度
 const levelInput = ref<string>("");
 
+// 默认打开Loader
 const loading = ElLoading.service({
     fullscreen: true,
     lock: true,
@@ -24,14 +34,18 @@ const loading = ElLoading.service({
     background: "white",
 });
 
+// 加载曲目数据库
 setTimeout(() => {
     let response = Data.fetch();
-    response.then((res: AxiosResponse<IMusicInfo[]>) => {
-        store.commit('updateMusicList', res.data);
+    response.then((res: AxiosResponse<IMusicData>) => {
+        store.commit('setUpdateDate', res.data.updateDate);
+        store.commit('setVersion', res.data.version);
+        store.commit('setMusicList', res.data.musicList);
         loading.close();
     });
 }, 500);
 
+// 开始抽取
 function randMusic(): void {
     if (levelInput.value == "") {
         ElMessage({
@@ -57,8 +71,8 @@ function randMusic(): void {
                 <p>
                     <img src="/images/logo.png" class="logo" alt="舞萌DX LOGO" />
                 </p>
-                <h1>清远舞萌DX比赛 THE 3rd. 决赛歌曲随机抽取系统</h1>
-                <p></p>
+                <h1>清远舞萌DX比赛 THE 3rd. 决赛歌曲随机抽取器</h1>
+                <p>曲库版本：{{store.state.version}}&nbsp;&nbsp;&nbsp;&nbsp;更新日期：{{store.state.updateDate}}</p>
             </div>
             <div class="main-content">
                 <el-row justify="center">

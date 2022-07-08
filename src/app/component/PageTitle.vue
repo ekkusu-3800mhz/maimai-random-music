@@ -4,9 +4,17 @@ import { useStore } from "vuex";
 import { injectionKey } from "@/app/core/store";
 import { ArrowLeft } from "@element-plus/icons-vue";
 
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 选手BAN歌视图标题组件
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 const { push } = useRouter();
 const store = useStore(injectionKey);
 
+// Page go back
 function back(): void {
     store.commit("clear");
     push({

@@ -6,7 +6,13 @@ import { cover } from "@/app/util/asset-map";
 
 import ChartType from "@/app/component/ChartType.vue";
 
-// props定义
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 大号歌曲信息卡片组件
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 const props = defineProps<{
     music: IMusicInfo;
     currentLevel: string;

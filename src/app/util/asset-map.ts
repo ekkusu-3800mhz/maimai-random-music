@@ -1,3 +1,10 @@
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 静态素材路径处理函数
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 // 素材基础路径
 const basePath = "/images/";
 // 素材文件后缀
@@ -51,6 +58,7 @@ function padding(number: number, length: number): string {
  * 
  *  @param {string} musicIdStr 歌曲ID字符串
  *  @returns {string}
+ *  @link {https://github.com/Diving-Fish/mai-bot/commit/3bea2d558aef0bf0fe916e6b4257d38cdeba60a4}
  */
 
 function parseCoverId(musicIdStr: string): string {

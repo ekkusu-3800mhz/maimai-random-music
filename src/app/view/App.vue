@@ -3,6 +3,13 @@ import { ref } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 基础路由视图
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 const locale = ref(zhCn);
 </script>
 

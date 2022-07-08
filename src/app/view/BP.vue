@@ -12,6 +12,13 @@ import PageTitle from "@/app/component/PageTitle.vue";
 import SongInfo from "@/app/component/SongInfo.vue";
 import SongSummary from "@/app/component/SongSummary.vue";
 
+/**
+ *  清远舞萌比赛BP机制抽歌器 - 选手BAN歌视图
+ * 
+ *  @author 3.80GHz <shinra.dx@outlook.com>
+ *  @license MIT
+ */
+
 const props = defineProps<{
     level: string;
 }>();
