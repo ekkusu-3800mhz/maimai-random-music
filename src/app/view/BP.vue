@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { injectionKey } from "@/app/core/store";
 
 import { IMusicInfo } from "@/app/data/interface";
+import { musicListShuffle } from "@/app/core/functions";
 
 import { ElLoading, ElMessage } from "element-plus";
 import { CircleCheck } from "@element-plus/icons-vue";
@@ -19,14 +20,15 @@ import SongSummary from "@/app/component/SongSummary.vue";
  *  @license MIT
  */
 
-const props = defineProps<{
-    level: string;
-}>();
-
 const { push } = useRouter();
 const store = useStore(injectionKey);
 
 if (store.state.musicList.length == 0) {
+    push({
+        name: "Intro",
+    });
+}
+if (store.state.levelInput == "") {
     push({
         name: "Intro",
     });
@@ -39,7 +41,7 @@ const loading = ElLoading.service({
     text: "正在抽取歌曲",
 });
 
-let musicLength = 7;
+let musicLength = store.state.playerBan * 2 + store.state.remainSong;
 
 const selectedList = ref<IMusicInfo[]>([]);
 const bannedListA = ref<IMusicInfo[]>([]);
@@ -49,25 +51,21 @@ const step = ref<number>(1);
 
 function levelFilter(music: IMusicInfo): boolean {
     let matched = false;
-    music.level.forEach((lv: string) => {
-        matched = (props.level == lv) ? true : false;
-    });
+    for (let l = 0; l < music.level.length; l++) {
+        if (store.state.levelInput == music.level[l]) {
+            matched = true;
+            break;
+        }
+    }
     return matched;
 }
 
 setTimeout(() => {
     // 过滤指定等级的歌曲
     let musicList: IMusicInfo[] = store.state.musicList.filter(levelFilter);
-    for (let i = 0; i < musicLength; i++) {
-        // 随机一个数组索引
-        let index = Math.round(Math.random() * musicList.length);
-        // 利用随机生成的索引号抽取对应的歌曲
-        selectedList.value.push(musicList[index]);
-        // 从源数组中删除该索引号的歌曲条目
-        musicList.splice(index, 1);
-    }
+    let shuffled: IMusicInfo[] = musicListShuffle(musicList);
+    selectedList.value = shuffled.splice(0, musicLength);
     loading.close();
-    console.log(selectedList.value);
 }, 3000);
 
 function ban(music: IMusicInfo): void {
@@ -87,7 +85,7 @@ function ban(music: IMusicInfo): void {
  */
 
 function banA(music: IMusicInfo): void {
-    if (bannedListA.value.length < 2) {
+    if (bannedListA.value.length < store.state.playerBan) {
         bannedListA.value.push(music);
         let index: number = selectedList.value.indexOf(music);
         selectedList.value.splice(index, 1);
@@ -122,10 +120,10 @@ function unbanA(music: IMusicInfo): void {
  */
 
 function confirmA(): void {
-    if (bannedListA.value.length != 2) {
+    if (bannedListA.value.length !== store.state.playerBan) {
         ElMessage({
             showClose: true,
-            message: "1P必须禁用2首歌曲",
+            message: `1P必须禁用${store.state.playerBan}首歌曲`,
             type: "error",
         });
     } else {
@@ -141,7 +139,7 @@ function confirmA(): void {
  */
 
 function banB(music: IMusicInfo): void {
-    if (bannedListB.value.length < 2) {
+    if (bannedListB.value.length < store.state.playerBan) {
         bannedListB.value.push(music);
         let index: number = selectedList.value.indexOf(music);
         selectedList.value.splice(index, 1);
@@ -176,10 +174,10 @@ function unbanB(music: IMusicInfo): void {
  */
 
 function confirmB(): void {
-    if (bannedListB.value.length != 2) {
+    if (bannedListB.value.length !== store.state.playerBan) {
         ElMessage({
             showClose: true,
-            message: "2P必须禁用2首歌曲",
+            message: `2P必须禁用${store.state.playerBan}首歌曲`,
             type: "error",
         });
     } else {
@@ -191,19 +189,19 @@ function confirmB(): void {
 <template>
     <el-container>
         <el-main>
-            <PageTitle />
-    <el-row justify="center">
-        <el-col :xs="24" :sm="24">
-            <el-card>
-                <el-steps :active="step" align-center>
-                    <el-step title="随机抽歌" />
-                    <el-step title="1P禁用歌曲" />
-                    <el-step title="2P禁用歌曲" />
-                    <el-step title="最终结果" />
-                </el-steps>
-            </el-card>
-        </el-col>
-    </el-row>
+            <PageTitle title="BP（Ban & Pick）机制选曲" />
+            <el-row justify="center">
+                <el-col :xs="24" :sm="24">
+                    <el-card>
+                        <el-steps :active="step" align-center>
+                            <el-step title="随机抽歌" />
+                            <el-step title="1P禁用歌曲" />
+                            <el-step title="2P禁用歌曲" />
+                            <el-step title="最终结果" />
+                        </el-steps>
+                    </el-card>
+                </el-col>
+            </el-row>
             <div class="main-content">
                 <el-row justify="center" :gutter="20">
                     <el-col :xs="24" :sm="7">
@@ -214,7 +212,7 @@ function confirmB(): void {
                             </h3>
                             <p style="text-align: center;" v-if="step === 1">（点按歌曲条目解禁选曲）</p>
                             <div v-for="musicA in bannedListA" :key="musicA.id" @click="unbanA(musicA)">
-                                <SongSummary :music="musicA" :current-level="props.level" />
+                                <SongSummary :music="musicA" :current-level="store.state.levelInput" />
                             </div>
                             <div class="submit-area" v-if="bannedListA.length > 0">
                                 <template v-if="step === 1">
@@ -225,11 +223,11 @@ function confirmB(): void {
                     </el-col>
                     <el-col :xs="24" :sm="10">
                         <el-card>
-                            <h2 style="text-align: center;" v-if="step !== 4">Lv.{{props.level}} 歌曲随机抽取结果</h2>
-                            <h2 style="text-align: center; color: #F56C6C;" v-else>本轮 Lv.{{props.level}} 决定曲</h2>
+                            <h2 style="text-align: center;" v-if="step !== 4">Lv.{{store.state.levelInput}} 歌曲随机抽取结果</h2>
+                            <h2 style="text-align: center; color: #F56C6C;" v-else>本轮 Lv.{{store.state.levelInput}} 决定曲</h2>
                             <p style="text-align: center;" v-if="step !== 4">（点按歌曲条目禁选该曲）</p>
                             <div v-for="music in selectedList" :key="music.id" @click="ban(music)">
-                                <SongInfo :music="music" :current-level="props.level" />
+                                <SongInfo :music="music" :current-level="store.state.levelInput" />
                             </div>
                         </el-card>
                     </el-col>
@@ -241,7 +239,7 @@ function confirmB(): void {
                             </h3>
                             <p style="text-align: center;" v-if="step === 2">（点按歌曲条目解禁选曲）</p>
                             <div v-for="musicB in bannedListB" :key="musicB.id" @click="unbanB(musicB)">
-                                <SongSummary :music="musicB" :current-level="props.level" />
+                                <SongSummary :music="musicB" :current-level="store.state.levelInput" />
                             </div>
                             <div class="submit-area" v-if="bannedListB.length > 0">
                                 <template v-if="step === 2">
