@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { defineProps } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { injectionKey } from "@/app/core/store";
@@ -10,6 +11,10 @@ import { ArrowLeft } from "@element-plus/icons-vue";
  *  @author 3.80GHz <shinra.dx@outlook.com>
  *  @license MIT
  */
+
+const props = defineProps<{
+    title: string;
+}>();
 
 const { push } = useRouter();
 const store = useStore(injectionKey);
@@ -29,7 +34,7 @@ function back(): void {
             <el-card>
                 <el-row>
                     <el-col :xs="20" :sm="16">
-                        <el-page-header :icon="ArrowLeft" content="Ban & Pick环节" @back="back()" />
+                        <el-page-header :icon="ArrowLeft" :content="title" @back="back()" />
                     </el-col>
                 </el-row>
             </el-card>
