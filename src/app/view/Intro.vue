@@ -22,9 +22,16 @@ const { push } = useRouter();
 const store = useStore(injectionKey);
 
 // 定义可选的难度
-const levels = ref<string[]>(["12", "12+", "13", "13+", "14",]);
+const levels = ref<string[]>(["7", "7+", "8", "8+", "9", "9+", "10", "10+",
+    "11", "11+", "12", "12+", "13", "13+", "14", "14+"]);
 // 记录选择的难度
-const levelInput = ref<string>("");
+const form = ref({
+    levelInput: "7",
+    remainSong: store.state.remainSong,
+    playerBan: store.state.playerBan,
+    randomSong: store.state.randomSong,
+});
+const randomType = ref<number>(1);
 
 // 默认打开Loader
 const loading = ElLoading.service({
@@ -47,19 +54,28 @@ setTimeout(() => {
 
 // 开始抽取
 function randMusic(): void {
-    if (levelInput.value == "") {
+    if (form.value.levelInput == "") {
         ElMessage({
             showClose: true,
             message: "请先选择难度，再进行抽取",
             type: "error",
         });
     } else {
-        push({
-            name: "BP",
-            params: {
-                level: levelInput.value,
-            },
-        });
+        if (randomType.value === 1) {
+            store.commit("setLevelInput", form.value.levelInput);
+            store.commit("setRandomSong", form.value.randomSong);
+            push({
+                name: "Random",
+            });
+        }
+        if (randomType.value === 2) {
+            store.commit("setLevelInput", form.value.levelInput);
+            store.commit("setPlayerBan", form.value.playerBan);
+            store.commit("setRemainSong", form.value.remainSong);
+            push({
+                name: "BP",
+            });
+        }
     }
 }
 </script>
@@ -76,13 +92,38 @@ function randMusic(): void {
             </div>
             <div class="main-content">
                 <el-row justify="center">
-                    <el-col :xs="24" :sm="10" :md="10">
+                    <el-col :xs="24" :sm="9" :md="9">
                         <el-card>
-                            <el-form label-position="top">
+                            <el-form :model="form" label-position="top">
                                 <el-form-item label="歌曲等级">
-                                    <el-radio-group v-model="levelInput">
-                                        <el-radio v-for="lv in levels" :key="lv" :label="lv" size="large" />
+                                    <el-select v-model="form.levelInput" placeholder="请选择歌曲等级" size="large">
+                                        <el-option v-for="lv in levels" :key="lv" :label="'Lv. ' + lv" :value="lv"/>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="抽取类型">
+                                    <el-radio-group v-model="randomType">
+                                        <el-radio :label="1" size="large">仅进行抽歌</el-radio>
+                                        <el-radio :label="2" size="large">BP（Ban & Pick）机制选曲</el-radio>
                                     </el-radio-group>
+                                </el-form-item>
+                                <el-form-item label="曲数设定">
+                                    <template v-if="randomType == 1">
+                                        <strong>从程序中随机抽取&nbsp;&nbsp;</strong>
+                                        <el-input-number v-model="form.randomSong" :min="1" :max="5" />
+                                        <strong>&nbsp;&nbsp;曲。</strong>
+                                    </template>
+                                    <template v-if="randomType == 2">
+                                        <p>
+                                            <strong>每位选手禁用&nbsp;&nbsp;</strong>
+                                            <el-input-number v-model="form.playerBan" :min="1" :max="5" />
+                                            <strong>&nbsp;&nbsp;曲，</strong>
+                                        </p>
+                                        <p>
+                                            <strong>最终留下&nbsp;&nbsp;</strong>
+                                            <el-input-number v-model="form.remainSong" :min="1" :max="5" />
+                                            <strong>&nbsp;&nbsp;曲。</strong>
+                                        </p>
+                                    </template>
                                 </el-form-item>
                                 <el-form-item class="btn-group">
                                     <el-button type="primary" size="large" @click="randMusic()"><el-icon><Refresh /></el-icon>&nbsp;&nbsp;开始抽歌</el-button>
