@@ -189,9 +189,13 @@ function confirmB(): void {
 <template>
     <el-container>
         <el-main>
-            <PageTitle title="BP（Ban & Pick）机制选曲" />
             <el-row justify="center">
-                <el-col :xs="24" :sm="24">
+                <el-col :xs="24" :lg="18">
+                    <PageTitle title="BP机制选曲" />
+                </el-col>
+            </el-row>
+            <el-row justify="center">
+                <el-col :xs="24" :lg="18">
                     <el-card>
                         <el-steps :active="step" align-center>
                             <el-step title="随机抽歌" />
@@ -204,7 +208,7 @@ function confirmB(): void {
             </el-row>
             <div class="main-content">
                 <el-row justify="center" :gutter="20">
-                    <el-col :xs="24" :sm="7">
+                    <el-col :xs="24" :sm="7" :lg="5" class="hidden-xs-only">
                         <el-card>
                             <h3 style="text-align: center;">
                                 <span v-if="step === 1" style="color: #409EFF;">1P选手禁用歌曲</span>
@@ -221,7 +225,7 @@ function confirmB(): void {
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :xs="24" :sm="10">
+                    <el-col :xs="24" :sm="10" :lg="8">
                         <el-card>
                             <h2 style="text-align: center;" v-if="step !== 4">Lv.{{store.state.levelInput}} 歌曲随机抽取结果</h2>
                             <h2 style="text-align: center; color: #F56C6C;" v-else>本轮 Lv.{{store.state.levelInput}} 决定曲</h2>
@@ -231,7 +235,41 @@ function confirmB(): void {
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :xs="24" :sm="7">
+                    <el-col :xs="24" :sm="7" :lg="5" class="hidden-xs-only">
+                        <el-card>
+                            <h3 style="text-align: center;">
+                                <span v-if="step === 2" style="color: #409EFF;">2P选手禁用歌曲</span>
+                                <span v-else>2P选手禁用歌曲</span>
+                            </h3>
+                            <p style="text-align: center;" v-if="step === 2">（点按歌曲条目解禁选曲）</p>
+                            <div v-for="musicB in bannedListB" :key="musicB.id" @click="unbanB(musicB)">
+                                <SongSummary :music="musicB" :current-level="store.state.levelInput" />
+                            </div>
+                            <div class="submit-area" v-if="bannedListB.length > 0">
+                                <template v-if="step === 2">
+                                    <el-button type="primary" size="large" @click="confirmB()"><el-icon><CircleCheck /></el-icon>&nbsp;&nbsp;确认</el-button>
+                                </template>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :xs="24" class="hidden-sm-and-up player-ban">
+                        <el-card>
+                            <h3 style="text-align: center;">
+                                <span v-if="step === 1" style="color: #409EFF;">1P选手禁用歌曲</span>
+                                <span v-else>1P选手禁用歌曲</span>
+                            </h3>
+                            <p style="text-align: center;" v-if="step === 1">（点按歌曲条目解禁选曲）</p>
+                            <div v-for="musicA in bannedListA" :key="musicA.id" @click="unbanA(musicA)">
+                                <SongSummary :music="musicA" :current-level="store.state.levelInput" />
+                            </div>
+                            <div class="submit-area" v-if="bannedListA.length > 0">
+                                <template v-if="step === 1">
+                                    <el-button type="primary" size="large" @click="confirmA()"><el-icon><CircleCheck /></el-icon>&nbsp;&nbsp;确认</el-button>
+                                </template>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :xs="24" class="hidden-sm-and-up player-ban">
                         <el-card>
                             <h3 style="text-align: center;">
                                 <span v-if="step === 2" style="color: #409EFF;">2P选手禁用歌曲</span>
@@ -257,6 +295,7 @@ function confirmB(): void {
 
 <style lang="less" scoped>
 .main-content {
+    margin-top: -0.9rem;
     padding-top: 2rem;
     padding-bottom: 3rem;
 }
@@ -265,6 +304,9 @@ function confirmB(): void {
 }
 .tutorial-img {
     width: 100%;
+}
+.player-ban {
+    margin-top: 0.9rem;
 }
 .submit-area {
     text-align: center;

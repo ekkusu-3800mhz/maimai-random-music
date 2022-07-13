@@ -26,9 +26,14 @@ size.value = (props.large) ? "large" : "small";
 
 <style lang="less" scoped>
 .large {
-    width: 100px;
+    width: 100%;
 }
 .small {
     width: 70px;
+}
+@media (min-width: 768px) {
+    .large {
+        width: 90%;
+    }
 }
 </style>

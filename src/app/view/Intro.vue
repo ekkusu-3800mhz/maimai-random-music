@@ -92,7 +92,7 @@ function randMusic(): void {
             </div>
             <div class="main-content">
                 <el-row justify="center">
-                    <el-col :xs="24" :sm="9" :md="9">
+                    <el-col :xs="24" :sm="12" :md="9" :lg="5">
                         <el-card>
                             <el-form :model="form" label-position="top">
                                 <el-form-item label="歌曲等级">
@@ -106,7 +106,7 @@ function randMusic(): void {
                                         <el-radio :label="2" size="large">BP（Ban & Pick）机制选曲</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
-                                <el-form-item label="曲数设定">
+                                <el-form-item label="曲数设定" v-if="randomType > 0">
                                     <template v-if="randomType == 1">
                                         <strong>从程序中随机抽取&nbsp;&nbsp;</strong>
                                         <el-input-number v-model="form.randomSong" :min="1" :max="5" />

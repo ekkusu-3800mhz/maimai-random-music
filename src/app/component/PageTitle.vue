@@ -44,7 +44,7 @@ function back(): void {
 
 <style lang="less" scoped>
 .page-title {
-    margin-top: -2rem;
+    margin-top: 0.5rem;
     padding-bottom: 1rem;
 }
 @media (min-width: 768px) {

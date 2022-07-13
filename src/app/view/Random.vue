@@ -68,9 +68,13 @@ setTimeout(() => {
 <template>
     <el-container>
         <el-main>
-            <PageTitle title="随机选曲" />
             <el-row justify="center">
-                <el-col :xs="24" :sm="24">
+                <el-col :xs="24" :sm="16" :md="12" :lg="12">
+                    <PageTitle title="随机选曲" />
+                </el-col>
+            </el-row>
+            <el-row justify="center">
+                <el-col :xs="24" :sm="16" :md="12" :lg="12">
                     <el-card>
                         <el-steps :active="step" align-center>
                             <el-step title="随机抽歌" />
@@ -80,8 +84,8 @@ setTimeout(() => {
                 </el-col>
             </el-row>
             <div class="main-content">
-                <el-row justify="center" :gutter="20">
-                    <el-col :xs="24" :sm="10">
+                <el-row justify="center">
+                    <el-col :xs="24" :sm="16" :md="12" :lg="12">
                         <el-card>
                             <h2 style="text-align: center;">Lv.{{store.state.levelInput}} 歌曲随机抽取结果</h2>
                             <div v-for="music in selectedList" :key="music.id">
@@ -98,6 +102,7 @@ setTimeout(() => {
 
 <style lang="less" scoped>
 .main-content {
+    margin-top: -0.9rem;
     padding-top: 2rem;
     padding-bottom: 3rem;
 }

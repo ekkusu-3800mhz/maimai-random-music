@@ -91,7 +91,8 @@ function parseDifficulty(level: string[]): string {
     text-align: center;
 }
 .chart-type {
-    margin-left: -0.85rem;
+    margin-left: -0.78rem;
+    margin-top: 0.5rem;
 }
 .song-cover {
     width: 100%;
@@ -141,6 +142,10 @@ function parseDifficulty(level: string[]): string {
     .song-level {
         font-size: 16px;
         margin-top: -0.9rem;
+    }
+    .chart-type {
+        margin-left: -0.85rem;
+        margin-top: 0.1rem;
     }
 }
 </style>
