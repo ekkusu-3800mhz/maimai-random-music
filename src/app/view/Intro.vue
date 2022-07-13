@@ -26,12 +26,12 @@ const levels = ref<string[]>(["7", "7+", "8", "8+", "9", "9+", "10", "10+",
     "11", "11+", "12", "12+", "13", "13+", "14", "14+"]);
 // 记录选择的难度
 const form = ref({
-    levelInput: "7",
+    levelInput: "13",
     remainSong: store.state.remainSong,
     playerBan: store.state.playerBan,
     randomSong: store.state.randomSong,
 });
-const randomType = ref<number>(1);
+const randomType = ref<number>(0);
 
 // 默认打开Loader
 const loading = ElLoading.service({
@@ -126,7 +126,12 @@ function randMusic(): void {
                                     </template>
                                 </el-form-item>
                                 <el-form-item class="btn-group">
-                                    <el-button type="primary" size="large" @click="randMusic()"><el-icon><Refresh /></el-icon>&nbsp;&nbsp;开始抽歌</el-button>
+                                    <template v-if="randomType > 0">
+                                        <el-button type="primary" size="large" @click="randMusic()"><el-icon><Refresh /></el-icon>&nbsp;&nbsp;开始抽歌</el-button>
+                                    </template>
+                                    <template v-else>
+                                        <el-button type="primary" size="large" :disabled="true">请选择抽取类型</el-button>
+                                    </template>
                                 </el-form-item>
                             </el-form>
                         </el-card>
