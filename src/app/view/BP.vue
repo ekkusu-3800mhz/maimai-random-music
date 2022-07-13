@@ -92,7 +92,7 @@ function banA(music: IMusicInfo): void {
     } else {
         ElMessage({
             showClose: true,
-            message: "1P禁用曲目以达到上限",
+            message: "1P禁用曲目达到上限",
             type: "error",
         });
     }
@@ -146,7 +146,7 @@ function banB(music: IMusicInfo): void {
     } else {
         ElMessage({
             showClose: true,
-            message: "2P禁用曲目以达到上限",
+            message: "2P禁用曲目达到上限",
             type: "error",
         });
     }
