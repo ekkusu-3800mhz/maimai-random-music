@@ -87,7 +87,7 @@ function randMusic(): void {
                 <p>
                     <img src="/images/logo.png" class="logo" alt="舞萌DX LOGO" />
                 </p>
-                <h1>清远舞萌DX比赛 THE 3rd. 决赛歌曲随机抽取器</h1>
+                <h1>清远舞萌DX比赛 Ver. 3.5 决赛歌曲随机抽取器</h1>
                 <p>曲库版本：{{store.state.version}}&nbsp;&nbsp;&nbsp;&nbsp;更新日期：{{store.state.updateDate}}</p>
             </div>
             <div class="main-content">
